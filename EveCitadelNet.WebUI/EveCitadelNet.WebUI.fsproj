@@ -11,7 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Configuration\EveAuthConfig.fs" />
     <Compile Include="WeatherForecast.fs" />
+    <Compile Include="Controllers\EveAuthController.fs" />
     <Compile Include="Controllers/WeatherForecastController.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
@@ -34,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\dist\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -47,6 +50,10 @@
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
 
+  <Target Name="BuildAndPublishWebpack" AfterTargets="Build">
+    
+  </Target>
+   
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />

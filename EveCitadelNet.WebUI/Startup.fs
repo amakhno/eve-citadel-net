@@ -6,6 +6,8 @@ open Microsoft.AspNetCore.SpaServices.AngularCli;
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open EveCitadelNet.WebUI.Configuration
+open System
 
 type Startup private () =
     new (configuration: IConfiguration) as this =
@@ -19,6 +21,11 @@ type Startup private () =
         services.AddSpaStaticFiles(fun configuration -> 
             configuration.RootPath <- "ClientApp/dist"
         )
+        services.AddTransient<EveAuthConfig>(fun _ -> 
+            let cfg = new EveAuthConfig()            
+            this.Configuration.GetSection("EveAuthConfig").Bind(cfg) |> ignore
+            cfg
+        ) |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
@@ -40,7 +47,7 @@ type Startup private () =
         app.UseSpa(fun spa -> 
             spa.Options.SourcePath <- "ClientApp"
             
-            if env.IsDevelopment() then
+            if (env.IsDevelopment() && this.Configuration.GetValue<bool> "UseSpa") then
                 spa.UseAngularCliServer("start")
             )
 
