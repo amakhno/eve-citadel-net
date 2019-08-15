@@ -1,10 +1,10 @@
 ﻿namespace EveCitadelNet.WebUI.Configuration
 
-type EveAuthConfig (clientId: string, secretKey: string, redirectUri: string, scope: string[]) =
-    new () = EveAuthConfig(null, null, null, null)
-    member val ClientId = clientId
-    member val SecretKey = secretKey
-    member val RedirectUri = redirectUri
-    member val Scope = scope
+type EveAuthConfig () =
+    member val ClientId = "" with get, set
+    member val SecretKey = "" with get, set
+    member val RedirectUri = "" with get, set
+    member val Scopes = Array.empty<string> with get, set 
 
-    member val public StringedScope : string = scope |> String.concat " "
+    member this.GetStringedScope() = 
+        (" ", this.Scopes) |> System.String.Join
